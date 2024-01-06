@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Generator</title>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            font-style: italic;
+            font-weight: bold;
+            font-size: 2em;
+            background-image: linear-gradient(to right, #b86bff, #7928ca);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+        }
+
+        label, textarea, select {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            font-size: 1.2em;
+            background-image: linear-gradient(to right, #b86bff, #7928ca);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 20px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .loading-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .loading-spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-message {
+            color: #3498db;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="logoForm" action="/generate_logo" method="post">
+        <h1>Logo Generator</h1>
+
+        <label for="brand_description">Briefly describe your logo:</label>
+        <textarea id="brand_description" name="brand_description" required></textarea>
+
+        <label for="style">Select Style:</label>
+        <select id="style" name="style">
+            <option value="abstract_expressionism">Abstract Expressionism</option>
+            <option value="crystal_cubism">Crystal Cubism</option>
+            <option value="pop_art">Pop Art</option>
+            <option value="pablo_picasso">Pablo Picasso</option>
+            <option value="black_and_white">Black and White</option>
+            <option value="paul_rand">Paul Rand</option>
+            <option value="piet_mondrian">Piet Mondrian</option>
+        </select>
+
+        <label for="type">Select Type:</label>
+        <select id="type" name="type">
+            <option value="logo_mascot">Logo Mascot</option>
+            <option value="lettermark">Lettermark</option>
+            <option value="emblem">Emblem</option>
+        </select>
+
+        <label for="technique">Select Technique:</label>
+        <select id="technique" name="technique">
+            <option value="outline">Outline</option>
+            <option value="gradient">Gradient</option>
+            <option value="screen_print">Screen-print</option>
+        </select>
+
+        <button type="button" onclick="generateLogo()">Generate Logo</button>
+
+        <div id="loadingContainer" class="loading-container">
+            <div class="loading-spinner"></div>
+            <p class="loading-message">Generating logo. Please wait...</p>
+        </div>
+    </form>
+
+    <script>
+        function generateLogo() {
+            document.getElementById('loadingContainer').style.display = 'flex';
+            // Assuming you have some logic here to submit the form
+            document.getElementById('logoForm').submit();
+        }
+    </script>
+</body>
+</html>
