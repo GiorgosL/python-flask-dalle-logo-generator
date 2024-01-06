@@ -3,6 +3,10 @@ from flask import Flask, render_template, request
 from openai import OpenAI
 from dotenv import load_dotenv
 import requests
+from PIL import Image
+from io import BytesIO
+import base64  # Add this import for base64
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
@@ -23,8 +27,12 @@ def generate_logo():
     selected_style = request.form['style']
     selected_type = request.form['type']
     selected_technique = request.form['technique']
+    selected_color_scheme = request.form['color_scheme']
+    selected_shape = request.form['shape']
+    selected_additional_style = request.form['additional_style']
 
     style_mapping = {
+        'simple':'Simple',
         'abstract_expressionism': 'Abstract Expressionism',
         'crystal_cubism': 'Crystal Cubism',
         'pop_art': 'Pop Art',
@@ -35,7 +43,7 @@ def generate_logo():
     }
 
     type_mapping = {
-        'logo_mascot': 'Logo Mascot',
+        'logo_mascot': 'Mascot',
         'lettermark': 'Lettermark',
         'emblem': 'Emblem'
     }
@@ -46,11 +54,36 @@ def generate_logo():
         'screen_print': 'Screen-print'
     }
 
+    color_scheme_mapping = {
+        'monochromatic': 'Monochromatic',
+        'analogous': 'Analogous',
+        'complementary': 'Complementary'
+    }
+
+    shape_mapping = {
+        'geometric': 'Geometric',
+        'organic': 'Organic'
+    }
+
+    additional_style_mapping = {
+        'minimalist': 'Minimalist',
+        'retro': 'Retro',
+        'vintage': 'Vintage'
+    }
+
     selected_style_name = style_mapping.get(selected_style, 'Custom Style')
     selected_type_name = type_mapping.get(selected_type, 'Custom Type')
     selected_technique_name = technique_mapping.get(selected_technique, 'Custom Technique')
+    selected_color_scheme_name = color_scheme_mapping.get(selected_color_scheme, 'Custom Color Scheme')
+    selected_shape_name = shape_mapping.get(selected_shape, 'Custom Shape')
+    selected_additional_style_name = additional_style_mapping.get(selected_additional_style, 'Custom Additional Style')
 
-    prompt = f"A simple logo of a {brand_description}, {selected_type_name}, {selected_style_name}, {selected_technique_name}, simple, vector. Do not include any letters on the generated image."
+    prompt = f"A {selected_type_name} logo for {brand_description} with the following characteristics: " \
+            f"Style: {selected_style_name}, Technique: {selected_technique_name}, " \
+            f"Color Scheme: {selected_color_scheme_name}, Shape: {selected_shape_name}, " \
+            f"Additional Style: {selected_additional_style_name}. " \
+            f"Do not include any letters on the generated image."
+
     response = client.images.generate(
         model="dall-e-3",  # dall-e-3 for HQ
         prompt=prompt,
@@ -60,8 +93,19 @@ def generate_logo():
 
     image_url = response.data[0].url
 
-    return render_template('result.html', image_url=image_url)
+    # Resize the image to 728
+    resized_image = resize_image(image_url, target_size=(728, 728))
 
+    return render_template('result.html', image_url=resized_image)
+
+def resize_image(image_url, target_size):
+    response = requests.get(image_url)
+    img = Image.open(BytesIO(response.content))
+    img_resized = img.resize(target_size, Image.LANCZOS)  # Use LANCZOS for downsampling
+    resized_bytes_io = BytesIO()
+    img_resized.save(resized_bytes_io, format='JPEG')  # Adjust the format if needed
+    resized_image = base64.b64encode(resized_bytes_io.getvalue()).decode('utf-8')
+    return f"data:image/jpeg;base64,{resized_image}"
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logo Result</title>
-
+    <!-- Your existing head content -->
     <style>
         body {
             display: flex;
@@ -15,6 +11,7 @@
             min-height: 100vh;
             background: linear-gradient(to right, #74ebd5, #acb6e5);
             margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         h1 {
@@ -22,17 +19,33 @@
             text-align: center;
             font-style: italic;
             font-weight: bold;
+            font-size: 2em;
+            background-image: linear-gradient(to right, #b86bff, #7928ca);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
         }
 
         img {
-            max-width: 100%;
+            max-width: 100%;  /* Make the image responsive */
             height: auto;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
         }
 
-        .button {
+        .image-container {
+            max-width: 500px; /* Set a maximum width for the image container */
+            margin: 0 auto;   /* Center the image container */
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        a.button {
             display: inline-block;
             padding: 20px 40px;
             font-size: 18px;
@@ -46,29 +59,16 @@
             transition: background-color 0.3s ease;
         }
 
-        .button:hover {
+        a.button:hover {
             background-color: #45a049;
-        }
-
-        p {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <h1>Generated Logo</h1>
-    <img src="{{ image_url }}" alt="Generated Logo">
+    <div class="image-container">
+        <img src="{{ image_url }}" alt="Generated Logo">
+    </div>
     <p><a href="/" class="button">Generate Another Logo</a></p>
 </body>
 </html>

@@ -31,13 +31,14 @@
             margin-bottom: 20px;
         }
 
+        /* Add the new font-family to other elements as needed */
         label, textarea, select {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         label {
             display: block;
-            margin: 10px 0;
+            margin: 5px 0;  /* Reduced margin */
             font-size: 1.2em;
             background-image: linear-gradient(to right, #b86bff, #7928ca);
             background-clip: text;
@@ -47,20 +48,21 @@
 
         textarea, select {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
+            padding: 5px;  /* Reduced padding */
+            margin-bottom: 10px;  /* Reduced margin */
             box-sizing: border-box;
             font-size: 1em;
         }
 
         .button {
-            display: inline-block;
-            padding: 20px 40px;
+            display: block;
+            width: 100%;  /* Make the button full width */
+            padding: 15px 0;  /* Adjusted padding */
             font-size: 18px;
             font-weight: bold;
             text-align: center;
             text-decoration: none;
-            background-color: #4CAF50;
+            background-color: #c235b493;
             color: white;
             border-radius: 8px;
             cursor: pointer;
@@ -68,24 +70,36 @@
         }
 
         .button:hover {
-            background-color: #45a049;
+            background-color: #699d63a8;
         }
 
-        .loading-container {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        p {
+            text-align: center;
             margin-top: 20px;
         }
 
+        a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
         .loading-spinner {
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid #3498db;
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
+            border-top: 4px solid #7928ca; /* Spinner color */
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite; /* Spin animation */
         }
 
         @keyframes spin {
@@ -93,16 +107,21 @@
             100% { transform: rotate(360deg); }
         }
 
-        .loading-message {
-            color: #3498db;
-            font-size: 1.2em;
-            margin-top: 10px;
-        }
     </style>
+    <script>
+        function showLoadingSpinner() {
+            var spinner = document.getElementById('loading-spinner');
+            var button = document.getElementById('generate-button');
+
+            spinner.style.display = 'block';
+            button.style.display = 'none';
+        }
+    </script>
+
 </head>
 
 <body>
-    <form id="logoForm" action="/generate_logo" method="post">
+    <form action="/generate_logo" method="post" onsubmit="showLoadingSpinner()">
         <h1>Logo Generator</h1>
 
         <label for="brand_description">Briefly describe your logo:</label>
@@ -110,6 +129,7 @@
 
         <label for="style">Select Style:</label>
         <select id="style" name="style">
+            <option value="simple">Simple</option>
             <option value="abstract_expressionism">Abstract Expressionism</option>
             <option value="crystal_cubism">Crystal Cubism</option>
             <option value="pop_art">Pop Art</option>
@@ -121,7 +141,7 @@
 
         <label for="type">Select Type:</label>
         <select id="type" name="type">
-            <option value="logo_mascot">Logo Mascot</option>
+            <option value="logo_mascot">Mascot</option>
             <option value="lettermark">Lettermark</option>
             <option value="emblem">Emblem</option>
         </select>
@@ -133,20 +153,32 @@
             <option value="screen_print">Screen-print</option>
         </select>
 
-        <button type="button" onclick="generateLogo()">Generate Logo</button>
+        <label for="color_scheme">Select Color Scheme:</label>
+        <select id="color_scheme" name="color_scheme">
+            <option value="monochromatic">Monochromatic</option>
+            <option value="analogous">Analogous</option>
+            <option value="complementary">Complementary</option>
+        </select>
 
-        <div id="loadingContainer" class="loading-container">
-            <div class="loading-spinner"></div>
-            <p class="loading-message">Generating logo. Please wait...</p>
+        <label for="shape">Select Shape:</label>
+        <select id="shape" name="shape">
+            <option value="geometric">Geometric</option>
+            <option value="organic">Organic</option>
+        </select>
+
+        <label for="additional_style">Select Additional Style:</label>
+        <select id="additional_style" name="additional_style">
+            <option value="minimalist">Minimalist</option>
+            <option value="retro">Retro</option>
+            <option value="vintage">Vintage</option>
+        </select>
+
+        <!-- Add the loading spinner with an ID -->
+        <div id="loading-spinner" class="loading-spinner">
+            <div class="spinner"></div>
         </div>
-    </form>
 
-    <script>
-        function generateLogo() {
-            document.getElementById('loadingContainer').style.display = 'flex';
-            // Assuming you have some logic here to submit the form
-            document.getElementById('logoForm').submit();
-        }
-    </script>
+        <button type="submit" class="button" style="background-color: #7928ca;">Generate Logo</button>
+    </form>
 </body>
 </html>
