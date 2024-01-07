@@ -1,0 +1,68 @@
+<!-- templates/landing.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Logo Creator</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            background-image: linear-gradient(to right, #b86bff, #7928ca);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        p {
+            font-size: 1.5em;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        a.button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: inline-block;
+            margin-right:140px; /* Add margin between buttons */
+            padding: 15px 30px;
+            font-size: 1.2em;
+            text-align: center;
+            text-decoration: none;
+            background-color: #c235b493;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        a.button:first-child {
+            margin-right: 0; /* Remove margin for the first button */
+        }
+
+    </style>
+</head>
+<body>
+    <a href="/signup" class="button">Sign Up</a>
+    <a href="/login" class="button">Login</a>
+    <h1>Welcome to Logo Creator</h1>
+    <p>Start creating stunning logos with our Logo Generator!</p>
+</body>
+</html>

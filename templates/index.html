@@ -31,14 +31,13 @@
             margin-bottom: 20px;
         }
 
-        /* Add the new font-family to other elements as needed */
         label, textarea, select {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         label {
             display: block;
-            margin: 5px 0;  /* Reduced margin */
+            margin: 5px 0;
             font-size: 1.2em;
             background-image: linear-gradient(to right, #b86bff, #7928ca);
             background-clip: text;
@@ -111,13 +110,14 @@
     <script>
         function showLoadingSpinner() {
             var spinner = document.getElementById('loading-spinner');
+            var message = document.getElementById('loading-message');
             var button = document.getElementById('generate-button');
 
             spinner.style.display = 'block';
+            message.innerText = 'Generating logo...';
             button.style.display = 'none';
         }
     </script>
-
 </head>
 
 <body>
@@ -173,9 +173,9 @@
             <option value="vintage">Vintage</option>
         </select>
 
-        <!-- Add the loading spinner with an ID -->
         <div id="loading-spinner" class="loading-spinner">
             <div class="spinner"></div>
+            <div id="loading-message" class="loading-message"></div>
         </div>
 
         <button type="submit" class="button" style="background-color: #7928ca;">Generate Logo</button>

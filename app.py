@@ -1,24 +1,48 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
+from flask_dance.contrib.google import make_google_blueprint, google
 from openai import OpenAI
 from dotenv import load_dotenv
-import requests
-from PIL import Image
-from io import BytesIO
-import base64  # Add this import for base64
+import secrets
 
+from utils import resize_image
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
-api_key = os.environ.get("OPENAI_API_KEY")
-client = OpenAI(api_key=api_key)
+
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+google_bp = make_google_blueprint(client_id=os.environ.get("client_id"),
+                                  client_secret=os.environ.get("client_secret"),
+                                  redirect_to='google_login')
 
 
 app = Flask(__name__)
 
+app.register_blueprint(google_bp, url_prefix='/index')
+app.secret_key = secrets.token_hex(16)
+
+@app.route('/')
+def landing():
+    return render_template('landing.html')
+
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if not google.authorized:
+        return redirect(url_for('google.login'))
+    resp = google.get('/plus/v1/people/me')
+    assert resp.ok, resp.text
+    # Here, you can use the information from `resp.json()` to create or authenticate the user
+    user_info = resp.json()
+    # Implement your user handling logic (create user, log in, etc.)
+    return render_template('index.html', user_info=user_info)
+
+
+@app.route('/login/google/authorized')
+def google_callback():
+    # This route is automatically called after a successful Google Sign-In
+    return redirect(url_for('index'))
+
 
 @app.route('/generate_logo', methods=['POST'])
 def generate_logo():
@@ -85,27 +109,22 @@ def generate_logo():
             f"Do not include any letters on the generated image."
 
     response = client.images.generate(
-        model="dall-e-3",  # dall-e-3 for HQ
+        model="dall-e-3",
         prompt=prompt,
         quality="standard",
         n=1,
     )
 
     image_url = response.data[0].url
-
-    # Resize the image to 728
     resized_image = resize_image(image_url, target_size=(728, 728))
 
     return render_template('result.html', image_url=resized_image)
 
-def resize_image(image_url, target_size):
-    response = requests.get(image_url)
-    img = Image.open(BytesIO(response.content))
-    img_resized = img.resize(target_size, Image.LANCZOS)  # Use LANCZOS for downsampling
-    resized_bytes_io = BytesIO()
-    img_resized.save(resized_bytes_io, format='JPEG')  # Adjust the format if needed
-    resized_image = base64.b64encode(resized_bytes_io.getvalue()).decode('utf-8')
-    return f"data:image/jpeg;base64,{resized_image}"
+@app.route('/login')
+def login():
+    return redirect(url_for('google.login'))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
