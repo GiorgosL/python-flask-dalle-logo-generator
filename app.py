@@ -3,7 +3,6 @@ from flask import Flask, render_template, request
 from openai import OpenAI
 from dotenv import load_dotenv
 import secrets
-import logging
 
 from utils import resize_image, setup_logging
 
