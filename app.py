@@ -3,17 +3,21 @@ from flask import Flask, render_template, request
 from openai import OpenAI
 from dotenv import load_dotenv
 import secrets
+import google.cloud.logging
+from google.cloud.logging import DESCENDING
 
-from utils import resize_image, setup_logging
+from utils import resize_image
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.env'))
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
+client_logs = google.cloud.logging.Client()
+client_logs.get_default_handler()
+
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
-setup_logging(app, 'logo_gen.log')
 
 @app.route('/')
 def landing():
@@ -97,7 +101,7 @@ def generate_logo():
         return render_template('result.html', image_url=resized_image)
     
     except Exception as e:
-        app.logger.error(f'Error occured: {str(e)}')
+        client_logs.setup_logging(f'Occured: {e}',log_level='INFO')
         raise
 
 if __name__ == '__main__':

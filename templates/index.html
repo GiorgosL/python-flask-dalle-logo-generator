@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,37 +32,56 @@
             margin-bottom: 20px;
         }
 
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
         label, textarea, select {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         label {
             display: block;
-            margin: 5px 0;
+            margin: 10px 0;
             font-size: 1.2em;
             background-image: linear-gradient(to right, #b86bff, #7928ca);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
+            border-radius: 8px; /* Make label rounded */
+            padding: 10px; /* Add padding to label */
+        }
+
+        select option {
+            color: #7928ca;
         }
 
         textarea, select {
-            width: 100%;
-            padding: 5px;  /* Reduced padding */
+            width: calc(100% - 20px);
+            padding: 10px; /* Adjusted padding */
             margin-bottom: 10px;  /* Reduced margin */
             box-sizing: border-box;
             font-size: 1em;
+            border-radius: 8px; /* Make text area and select rounded */
         }
 
         .button {
             display: block;
-            width: 100%;  /* Make the button full width */
-            padding: 15px 0;  /* Adjusted padding */
+            width: calc(100% - 20px);
+            padding: 15px;
             font-size: 18px;
             font-weight: bold;
             text-align: center;
             text-decoration: none;
-            background-color: #c235b493;
+            background-color: #7928ca;
             color: white;
             border-radius: 8px;
             cursor: pointer;
@@ -72,24 +92,10 @@
             background-color: #699d63a8;
         }
 
-        p {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
         .loading-spinner {
             display: none;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 20px;
         }
 
         .spinner {
@@ -105,8 +111,8 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
     </style>
+
     <script>
         function showLoadingSpinner() {
             var spinner = document.getElementById('loading-spinner');
@@ -124,11 +130,8 @@
     <form action="/generate_logo" method="post" onsubmit="showLoadingSpinner()">
         <h1>Logo Generator</h1>
 
-        <label for="brand_description">Briefly describe your logo:</label>
-        <textarea id="brand_description" name="brand_description" required></textarea>
-
-        <label for="style">Select Style:</label>
         <select id="style" name="style">
+            <option value="" disabled selected style="display:none; background-image: linear-gradient(to right, #b86bff, #7928ca); color: transparent;">Select Style</option>
             <option value="simple">Simple</option>
             <option value="abstract_expressionism">Abstract Expressionism</option>
             <option value="crystal_cubism">Crystal Cubism</option>
@@ -139,35 +142,35 @@
             <option value="piet_mondrian">Piet Mondrian</option>
         </select>
 
-        <label for="type">Select Type:</label>
         <select id="type" name="type">
+            <option value="" disabled selected style="display:none; background-image: linear-gradient(to right, #b86bff, #7928ca); color: transparent;">Select Type</option>
             <option value="logo_mascot">Mascot</option>
             <option value="lettermark">Lettermark</option>
             <option value="emblem">Emblem</option>
         </select>
 
-        <label for="technique">Select Technique:</label>
         <select id="technique" name="technique">
+            <option value="" disabled selected style="display:none; background-image: linear-gradient(to right, #b86bff, #7928ca); color: transparent;">Select Technique</option>
             <option value="outline">Outline</option>
             <option value="gradient">Gradient</option>
             <option value="screen_print">Screen-print</option>
         </select>
 
-        <label for="color_scheme">Select Color Scheme:</label>
         <select id="color_scheme" name="color_scheme">
+            <option value="" disabled selected style="display:none; background-image: linear-gradient(to right, #b86bff, #7928ca); color: transparent;">Select Color Scheme</option>
             <option value="monochromatic">Monochromatic</option>
             <option value="analogous">Analogous</option>
             <option value="complementary">Complementary</option>
         </select>
 
-        <label for="shape">Select Shape:</label>
         <select id="shape" name="shape">
+            <option value="" disabled selected style="display:none; background-image: linear-gradient(to right, #b86bff, #7928ca); color: transparent;">Select Shape</option>
             <option value="geometric">Geometric</option>
             <option value="organic">Organic</option>
         </select>
 
-        <label for="additional_style">Select Additional Style:</label>
         <select id="additional_style" name="additional_style">
+            <option value="" disabled selected style="display:none; background-image: linear-gradient(to right, #b86bff, #7928ca); color: transparent;">Select Additional Style</option>
             <option value="minimalist">Minimalist</option>
             <option value="retro">Retro</option>
             <option value="vintage">Vintage</option>
@@ -178,7 +181,12 @@
             <div id="loading-message" class="loading-message"></div>
         </div>
 
-        <button type="submit" class="button" style="background-color: #7928ca;">Generate Logo</button>
+        <button type="submit" class="button" id="generate-button">Generate Logo</button>
     </form>
+
+    <div class="footer">
+        Created by @George L
+    </div>
 </body>
+
 </html>
