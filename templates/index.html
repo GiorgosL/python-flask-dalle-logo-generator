@@ -130,6 +130,9 @@
     <form action="/generate_logo" method="post" onsubmit="showLoadingSpinner()">
         <h1>Logo Generator</h1>
 
+        <textarea id="brand_description" name="brand_description" placeholder="Briefly describe your logo:" required></textarea>
+
+
         <select id="style" name="style">
             <option value="" disabled selected style="display:none; background-image: linear-gradient(to right, #b86bff, #7928ca); color: transparent;">Select Style</option>
             <option value="simple">Simple</option>

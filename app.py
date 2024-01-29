@@ -101,7 +101,7 @@ def generate_logo():
         return render_template('result.html', image_url=resized_image)
     
     except Exception as e:
-        client_logs.setup_logging(f'Occured: {e}',log_level='INFO')
+        # client_logs.setup_logging(f'Occured: {e}',log_level='INFO')
         raise
 
 if __name__ == '__main__':
